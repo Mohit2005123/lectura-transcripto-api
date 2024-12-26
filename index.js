@@ -8,13 +8,14 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import getTranscript from "./generateTranscript.js";
 import generateNotes from "./groqGenerate.js";
+import cors from "cors";
 dotenv.config(); // Load environment variables from .env file
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(bodyParser.json()); // To parse JSON body
-
+app.use(cors()); // To enable CORS
 // Route to handle POST requests
 app.post("/api/generate", async (req, res) => {
   try {
