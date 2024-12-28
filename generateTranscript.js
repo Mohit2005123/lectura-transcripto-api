@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-export default async function getTranscript(videoUrl) {
+export default async function getTranscript(videoUrl, Transcript_api_key) {
     try{
         const options = {
             method: 'GET',
@@ -10,7 +9,7 @@ export default async function getTranscript(videoUrl) {
               chunkSize: '500'
             },
             headers: {
-              'x-rapidapi-key': '602005c5a1msh37392ce6489a5d3p1264e8jsna4cbaf21730b',
+              'x-rapidapi-key': Transcript_api_key,
               'x-rapidapi-host': 'youtube-transcripts.p.rapidapi.com'
             }
           };

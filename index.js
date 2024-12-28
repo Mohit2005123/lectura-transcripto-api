@@ -74,12 +74,16 @@ app.use(cors()); // To enable CORS
 
 // Load GROQ API keys as an array
 const GROQ_API_KEY_ARRAY = JSON.parse(process.env.GROQ_API_KEY_JSON);
-
+const Transcript_api_keyArray=JSON.parse( process.env.TRANSCRIPT_API_KEY_JSON);
 // Helper function to select a random key
 const getRandomApiKey = () => {
   const randomIndex = Math.floor(Math.random() * GROQ_API_KEY_ARRAY.length);
   return GROQ_API_KEY_ARRAY[randomIndex];
 };
+const getRandomApiKeyTrancript= ()=>{
+  const randomIndex = Math.floor(Math.random() * Transcript_api_keyArray.length);
+  return Transcript_api_keyArray[randomIndex];
+}
 
 // Route to handle POST requests
 app.post("/api/generate", async (req, res) => {
@@ -90,9 +94,9 @@ app.post("/api/generate", async (req, res) => {
     if (!link) {
       return res.status(400).json({ message: "Link not provided" });
     }
-
+    const Transcript_api_key= getRandomApiKeyTrancript();
     // Generate transcript
-    const transcript = await getTranscript(link);
+    const transcript = await getTranscript(link, Transcript_api_key);
     if (!transcript) {
       return res.status(500).json({ message: "Transcript generation failed" });
     }
