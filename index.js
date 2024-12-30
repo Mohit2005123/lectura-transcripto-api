@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import getTranscript from "./generateTranscript.js";
 import generateNotes from "./groqGenerate.js";
 import cors from "cors";
+import ApiKeyManager from "./apiKeyManager.js";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -14,22 +15,17 @@ const PORT = process.env.PORT || 8000;
 app.use(bodyParser.json()); // To parse JSON body
 app.use(cors()); // To enable CORS
 
-// Load GROQ API keys as an array
-const GROQ_API_KEY_ARRAY = JSON.parse(process.env.GROQ_API_KEY_JSON);
-const Transcript_api_keyArray=JSON.parse( process.env.TRANSCRIPT_API_KEY_JSON);
-// Helper function to select a random key
-const getRandomApiKey = () => {
-  const randomIndex = Math.floor(Math.random() * GROQ_API_KEY_ARRAY.length);
-  return GROQ_API_KEY_ARRAY[randomIndex];
-};
-const getRandomApiKeyTrancript= ()=>{
-  const randomIndex = Math.floor(Math.random() * Transcript_api_keyArray.length);
-  return Transcript_api_keyArray[randomIndex];
-}
+// Initialize API key managers
+const groqKeyManager = new ApiKeyManager(JSON.parse(process.env.GROQ_API_KEY_JSON));
+const transcriptKeyManager = new ApiKeyManager(JSON.parse(process.env.TRANSCRIPT_API_KEY_JSON));
 
-async function tryGetTranscript(link, maxAttempts = 3) {
+// Updated key selection functions
+const getNextGroqKey = () => groqKeyManager.getNextKey();
+const getNextTranscriptKey = () => transcriptKeyManager.getNextKey();
+
+async function tryGetTranscript(link, maxAttempts = 5) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    const apiKey = getRandomApiKeyTrancript();
+    const apiKey = getNextTranscriptKey();
     try {
       const transcript = await getTranscript(link, apiKey);
       if (transcript) {
@@ -62,10 +58,10 @@ app.post("/api/generate", async (req, res) => {
     }
 
     // Select a random API key
-    const randomApiKey = getRandomApiKey();
+    const groqApiKey = getNextGroqKey();
 
     // Generate notes using the random API key
-    const notes = await generateNotes(randomApiKey, transcript);
+    const notes = await generateNotes(groqApiKey, transcript);
     if (!notes) {
       return res.status(500).json({ message: "Notes generation from AI failed" });
     }
