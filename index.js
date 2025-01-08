@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import getTranscript from "./generateTranscript.js";
-import generateNotes from "./groqGenerate.js";
+import generateNotes from "./groqGenerate1.js";
 import cors from "cors";
 import ApiKeyManager from "./apiKeyManager.js";
 
