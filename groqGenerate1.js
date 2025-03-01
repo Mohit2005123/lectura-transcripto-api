@@ -71,7 +71,7 @@ Output only valid JSON. Do not include any extra text outside the JSON response.
     try {
       // Generate the notes by sending a request to the LLM
       const result = await groq.chat.completions.create({
-        model: "llama-3.1-8b-instant",
+        model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
