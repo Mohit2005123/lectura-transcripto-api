@@ -71,7 +71,7 @@ Output only valid JSON. Do not include any extra text outside the JSON response.
     try {
       // Generate the notes by sending a request to the LLM
       const result = await groq.chat.completions.create({
-        model: "distil-whisper-large-v3-en",
+        model: "gemma2-9b-it",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
