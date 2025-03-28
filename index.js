@@ -5,7 +5,7 @@ import getTranscript from "./generateTranscript.js";
 import generateNotes from "./groqGenerate1.js";
 import cors from "cors";
 import ApiKeyManager from "./apiKeyManager.js";
-
+// import generateNotes from "./gptGenerate.js";
 dotenv.config(); // Load environment variables from .env file
 
 const app = express();
@@ -16,11 +16,11 @@ app.use(bodyParser.json()); // To parse JSON body
 app.use(cors()); // To enable CORS
 
 // Initialize API key managers
-const groqKeyManager = new ApiKeyManager(JSON.parse(process.env.GROQ_API_KEY_JSON));
+// const groqKeyManager = new ApiKeyManager(JSON.parse(process.env.GROQ_API_KEY_JSON));
 const transcriptKeyManager = new ApiKeyManager(JSON.parse(process.env.TRANSCRIPT_API_KEY_JSON));
-
+const groqApiKey=process.env.GROQ_API_KEY;
 // Updated key selection functions
-const getNextGroqKey = () => groqKeyManager.getNextKey();
+// const getNextGroqKey = () => groqKeyManager.getNextKey();
 const getNextTranscriptKey = () => transcriptKeyManager.getNextKey();
 
 async function tryGetTranscript(link, maxAttempts = 5) {
@@ -45,7 +45,6 @@ async function tryGetTranscript(link, maxAttempts = 5) {
 app.post("/api/generate", async (req, res) => {
   try {
     const { link } = req.body; // Extract the link from the request body
-
     // Validate the link
     if (!link) {
       return res.status(400).json({ message: "Link not provided" });
@@ -56,17 +55,10 @@ app.post("/api/generate", async (req, res) => {
     if (!transcript) {
       return res.status(500).json({ message: "Transcript generation failed after multiple attempts" });
     }
-
-    // Select a random API key
-    const groqApiKey = getNextGroqKey();
-
-    // Generate notes using the random API key
     const notes = await generateNotes(groqApiKey, transcript);
     if (!notes) {
       return res.status(500).json({ message: "Notes generation from AI failed" });
     }
-
-    // Success response
     res.status(200).json({
       message: "Successful",
       notes: notes,
