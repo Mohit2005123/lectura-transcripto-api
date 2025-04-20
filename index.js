@@ -11,7 +11,7 @@ dotenv.config(); // Load environment variables from .env file
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// Middlewarec
+// Middleware
 app.use(bodyParser.json()); // To parse JSON body
 app.use(cors()); // To enable CORS
 
