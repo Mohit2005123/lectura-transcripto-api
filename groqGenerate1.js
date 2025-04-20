@@ -68,9 +68,8 @@ export default async function generateNotes(groqApiKey, transcript) {
 const systemPrompt=`You are an intelligent assistant specializing in creating structured, comprehensive, and highly detailed notes from transcripts of YouTube lecture videos. Your task is to perform the following steps:
 
 1.⁠ ⁠If the transcript is in English, proceed with generating detailed notes in English.
-2.⁠ ⁠If the transcript is in another language, generate the notes in the same language without translating to English.
-3. **Ensure that the notes are strictly in English, regardless of the input language.**
-4. **Use the maximum available output tokens to generate the most detailed and exhaustive notes possible.**
+2.⁠ If the transcript is in any other language, generate the notes in Hindi.
+3. **Use the maximum available output tokens to generate the most detailed and exhaustive notes possible.**
 
 For the output, provide only a valid JSON array of objects with proper formatting, including line breaks and special characters where needed.
 
