@@ -44,7 +44,8 @@ async function tryGetTranscript(link, maxAttempts = 5) {
 // Route to handle POST requests
 app.post("/api/generate", async (req, res) => {
   try {
-    const { link } = req.body; // Extract the link from the request body
+    console.log(req.body);
+    const { link , language} = req.body; // Extract the link from the request body
     // Validate the link
     if (!link) {
       return res.status(400).json({ message: "Link not provided" });
@@ -55,7 +56,7 @@ app.post("/api/generate", async (req, res) => {
     if (!transcript) {
       return res.status(500).json({ message: "Transcript generation failed after multiple attempts" });
     }
-    const notes = await generateNotes(groqApiKey, transcript);
+    const notes = await generateNotes(groqApiKey, transcript, language);
     if (!notes) {
       return res.status(500).json({ message: "Notes generation from AI failed" });
     }
