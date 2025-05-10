@@ -67,8 +67,8 @@ export default async function generateNotes(groqApiKey, transcript, language) {
 // `;
 const systemPrompt=`You are an intelligent assistant specializing in creating structured, comprehensive, and highly detailed notes from transcripts of YouTube lecture videos. Your task is to perform the following steps:
 
-1. Generate detailed notes in the specified target language (${language}).
-2. **Ensure that the notes are strictly in the target language (${language}).**
+1. Generate detailed notes strictly in the specified target language (${language}).
+2. **Ensure that the notes are composed exclusively in the target language (${language}), using only the native alphabets and characters of that language. No words, phrases, or alphabets from any other language are allowed in the output.**
 3. **Use the maximum available output tokens to generate the most detailed and exhaustive notes possible.**
 
 For the output, provide only a valid JSON array of objects with proper formatting, including line breaks and special characters where needed.
@@ -84,6 +84,11 @@ Each section must:
    - Summarize important definitions, processes, or frameworks mentioned, elaborating as needed.
 3. Organize the content with subheadings, bullet points, or numbered lists where appropriate for clarity and readability.
 4. Group related ideas together and rewrite them in a clear, structured, and detailed manner, omitting filler words or irrelevant information.
+
+### Important Constraints:
+- The entire output, including all headings and content, must be strictly in the target language (${language}) and written exclusively using its native alphabets and characters.
+- No English words, phrases, or Roman alphabets should appear anywhere in the output.
+- Any necessary technical terms should be translated to their native language equivalent, or transliterated using native script if no translation exists.
 
 ### Formatting Requirements:
 1. **JSON format**:

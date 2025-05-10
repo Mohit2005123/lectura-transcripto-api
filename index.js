@@ -44,7 +44,6 @@ async function tryGetTranscript(link, maxAttempts = 5) {
 // Route to handle POST requests
 app.post("/api/generate", async (req, res) => {
   try {
-    console.log(req.body);
     const { link , language} = req.body; // Extract the link from the request body
     // Validate the link
     if (!link) {
